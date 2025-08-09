@@ -21,7 +21,7 @@
 		<spring.version>5.1.2.RELEASE</spring.version>
 		<junit.version>4.11</junit.version>
 		<log4j.version>1.2.17</log4j.version>
-		<sonar.host.url>http://13.234.225.180:9000/</sonar.host.url>
+		<sonar.host.url>http://3.111.168.29:9000/</sonar.host.url>
 		<sonar.login>squ_86d2404506e0be051c032872cd4b16e46431db15</sonar.login> 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -97,13 +97,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Releases Nexus Repository</name>
-	      <url>http://13.200.249.228:9980/jvvenkatesh/repository/axisbank-releases/</url>
+	      <url>http://65.2.30.49:9980/jvvenkatesh/repository/axisbank-releases/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Snapshot Nexus Repository </name>
-	      <url>http://13.200.249.228:9980/jvvenkatesh/repository/axisbank-snapshot/</url>
+	      <url>http://65.2.30.49:9980/jvvenkatesh/repository/axisbank-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
