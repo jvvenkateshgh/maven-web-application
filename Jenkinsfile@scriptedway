@@ -1,29 +1,15 @@
-node
-{
+node{
 
-echo "the job name is: ${env.JOB_NAME}"
-echo "node name is: ${env.NODE_NAME}"
-echo "branch name is: ${env.BRANCH_NAME}"
-echo "build no name is: ${env.BUILD_NUMBER}"
-echo "Jenkins home name is: ${env.JENKINS_HOME}"
+try{
 
+def mavenHome = tool name: 'maven3.9.11'    
 
-def mavenHome = tool name: 'maven3.9.11'
-
-//set job properties
-properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([pollSCM('* * * * *')])])
-
-stage('checkout')
-{
-git branch: 'devlepment', credentialsId: '6beb2859-2a59-444c-a07e-5bc7e99a4ac2', url: 'https://github.com/jvvenkateshgh/maven-web-application.git'
+stage ('checkout'){
+git branch: 'devlepment', credentialsId: '6beb2859-2a59-444c-a07e-5bc7e99a4ac2', url: 'https://github.com/jvvenkateshgh/maven-web-application.git'    
+}    
+stage('build'){
+sh "${mavenHome}/bin/mvn clean package"    
 }
-
-stage('build')
-{
-sh "${mavenHome}/bin/mvn clean package"
-}
-
-
 stage('sonarreport')
 {
 sh "${mavenHome}/bin/mvn clean sonar:sonar"
@@ -46,8 +32,46 @@ sshagent(['4fd2ac34-826c-4ec2-b31f-cf47613e9ccf']) {
 */
 stage('deploytotom')
 {
-deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'ba50db0a-c86f-4987-8c7c-a29e5141ea32', path: '', url: 'http://52.66.20.60:9980/')], contextPath: null, war: '**/maven-web-application.war'
+deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'ba50db0a-c86f-4987-8c7c-a29e5141ea32', path: '', url: 'http://52.66.20.60:9980/')], contextPath: null, war: '**/*.war'
    
 }
 
+
+}//tryclosing
+
+catch(e){
+currentBuild.result = "FAILED"
+throw e
+}
+
+finally{
+sendSlackNotifications(currentBuild.result)
+}
+
+}//nodeclosing
+
+def sendSlackNotifications(String buildStatus = 'STARTED') {
+  // build status of null means successful
+  buildStatus =  buildStatus ?: 'SUCCESSFUL'
+
+  // Default values
+  def colorName = 'RED'
+  def colorCode = '#FF0000'
+  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+  def summary = "${subject} (${env.BUILD_URL})"
+
+  // Override default values based on build status
+  if (buildStatus == 'STARTED') {
+    colorName = 'ORANGE'
+    colorCode = '#FFA500'
+  } else if (buildStatus == 'SUCCESSFUL') {
+    colorName = 'GREEN'
+    colorCode = '#00FF00'
+  } else {
+    colorName = 'RED'
+    colorCode = '#FF0000'
+  }
+
+  // Send notifications
+  slackSend (color: colorCode, message: summary, channel: '#icicibank')
 }
