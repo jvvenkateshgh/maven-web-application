@@ -49,6 +49,17 @@ stages
 	}
 
   }
+
+  stage('Remove Docker Image Localy in Jenkins Server')
+  {
+	steps()
+	{
+		sh 'docker rmi jvvenkateshdh/docker-cicd:${buildNumber}'
+	}
+
+  }
+
+	
 }
 
 }
