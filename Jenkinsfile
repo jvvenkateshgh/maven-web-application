@@ -26,7 +26,7 @@ stage('Build Project')
     {
       steps()
       {
-        sh "mvn clean package"
+        sh 'mvn clean package'
       }
     }
 stage("Build Docker Image")
@@ -37,7 +37,7 @@ stage("Build Docker Image")
             }
         }
 
-stage("Authenticate and Push Docker Image to Docker Hub")
+stage('Authenticate and Push Docker Image to Docker Hub')
         {
             steps()
             {
@@ -48,8 +48,6 @@ stage("Authenticate and Push Docker Image to Docker Hub")
                 sh 'docker push jvvenkateshdh/docker-cicd:${buildNumber}'
             }
         }
-
-
 	
   }
 }
