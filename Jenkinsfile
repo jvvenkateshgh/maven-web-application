@@ -5,10 +5,13 @@ agent any
 tools
 {
      maven 'maven_3.9.7'
-
 }
-
-
+	
+environment
+{
+   buildNumber = "${BUILDNUMBER}"
+}
+	
 stages{
 
   stage('CheckOutCode')
@@ -26,6 +29,14 @@ stage('Build Project')
         sh "mvn clean package"
       }
     }
+stage("Build Docker Image")
+        {
+            steps()
+            {
+                sh 'docker build -t jvvenkateshdh/docker-cicd:${buildNumber} .'
+            }
+        }
+
 	
   }
 }
