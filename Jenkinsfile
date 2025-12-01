@@ -37,17 +37,8 @@ stage("Build Docker Image")
             }
         }
 
-stage('Authenticate and Push Docker Image to Docker Hub')
-        {
-            steps()
-            {
-                withCredentials([string(credentialsId: 'dockerhub-pw', variable: 'dockerhub-pw')])
-                {
-                    sh 'docker login -u jvvenkateshdh -p ${dockerhub-pw}'
-                }
-                sh 'docker push jvvenkateshdh/docker-cicd:${buildNumber}'
-            }
-        }
+
+	
 	
   }
 }
