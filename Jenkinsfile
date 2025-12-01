@@ -12,5 +12,14 @@ stages{
     git branch: 'docker-cicd', url: 'https://github.com/jvvenkateshgh/maven-web-application.git'
 	  }  
 	}
+
+stage('Build Project')
+    {
+      steps()
+      {
+        sh "mvn clean package"
+      }
+    }
+	
   }
 }
