@@ -59,7 +59,7 @@ stages
 
   }
 
-  stage('Deploy Aplication To Docker Deployment Server')
+  stage("Deploy Aplication To Docker Deployment Server")
   {
 	  steps()
 	  {
