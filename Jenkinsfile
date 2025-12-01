@@ -59,6 +59,21 @@ stages
 
   }
 
+  stage('Deploy Aplication To Docker Deployment Server')
+  {
+	  steps()
+	  {
+		  sshagent(['Deployment_SSH']) 
+		  {
+			  sh "ssh -o StrictHostKeyChecking=no ubuntu@3.236.252.76 docker rm -f mavenwebaplication || true"
+			  sh "ssh -o StrictHostKeyChecking=no ubuntu@3.236.252.76 docker run -d --name -p 8080:8080 jvvenkateshdh/docker-cicd:${buildNumber}"
+          
+		  }
+	  }
+   
+  }
+  
+
 	
 }
 
